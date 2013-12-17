@@ -1,3 +1,65 @@
 #!/usr/bin/env ruby
-require 'vagrant-swissarmyknife'
-Vagrant::Swissarmyknife
+require 'bundler/setup'
+require 'commander/import'
+require 'erb'
+require 'require_all'
+require 'singleton'
+require 'yaml'
+require 'vagrant/swissarmyknife/config'
+require 'vagrant/swissarmyknife/init'
+require 'vagrant/swissarmyknife/operations'
+require 'vagrant/swissarmyknife/version'
+
+program :name, 'vagrant-swissarmyknife'
+program :version, '1.0.0'
+program :description, 'bakes beans on toast'
+
+command :init do |cmd|
+  cmd.syntax = 'vagrant-swissarmyknife init'
+  cmd.description = 'Initializes the environment'
+  cmd.action do
+    initialize = Vagrant::Swissarmyknife::Init.new
+    initialize.bundler
+    initialize.install_templates
+    initialize.install_vagrant_plugins
+    initialize.download_vagrant_boxes
+    initialize.import_vagrant_boxes
+  end
+end
+
+
+command :uninstall do |cmd|
+  cmd.syntax = 'vagrant-swissarmyknife uninstall'
+  cmd.description = 'uninstalls the components'
+  cmd.action do
+    initialize = Vagrant::Swissarmyknife::Init.new
+    initialize.uninstall
+  end
+end
+
+command :up do |cmd|
+  cmd.syntax = 'vagrant-swissarmyknife up'
+  cmd.description = 'Executes vagrant up'
+  cmd.action do
+    operations = Vagrant::Swissarmyknife::Operations.new
+    operations.up
+  end
+end
+
+command :provision do |cmd|
+  cmd.syntax = 'vagrant-swissarmyknife provision'
+  cmd.description = 'Executes vagrant provision'
+  cmd.action do
+    operations = Vagrant::Swissarmyknife::Operations.new
+    operations.provision
+  end
+end
+
+command :destroy do |cmd|
+  cmd.syntax = 'vagrant-swissarmyknife destroy'
+  cmd.description = 'Executes vagrant destroy'
+  cmd.action do
+    operations = Vagrant::Swissarmyknife::Operations.new
+    operations.provision
+  end
+end
