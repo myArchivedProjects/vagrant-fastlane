@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'vagrant/swissarmyknife/version'
+require 'vagrantswissarmyknife/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "vagrant-swissarmyknife"
-  spec.version       = Vagrant::Swissarmyknife::VERSION
+  spec.version       = VagrantSwissArmyKnife::VERSION
   spec.authors       = ["Azul"]
   spec.email         = ["dontspam@azulinho.com"]
   spec.description   = %q{swissarmyknife for vagrant}

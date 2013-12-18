@@ -1,10 +1,6 @@
 module VagrantSwissArmyKnife
   class Init
 
-    def first_run
-      self.install_templates
-    end
-
     def initialize
     end
 
@@ -13,11 +9,11 @@ module VagrantSwissArmyKnife
     end
 
     def boxes
-      @boxes = YAML.load(File.read('config/boxes.yaml'))
+      @boxes = YAML.load(File.read('boxes.yaml'))
     end
 
     def plugins
-      @plugins = YAML.load(File.read('config/plugins.yaml'))
+      @plugins = YAML.load(File.read('plugins.yaml'))
     end
 
     def load_config
@@ -31,28 +27,26 @@ module VagrantSwissArmyKnife
     end
 
     def install_templates
-      %w[Vagrantfile Berksfile Gemfile].each do |tt|
+      %w[Vagrantfile Berksfile Gemfile plugins.yaml boxes.yaml].each do |tt|
 
-        template = File.read(File.expand_path("../templates/#{tt}", __FILE__))
+        template = File.read(File.expand_path("../../../templates/#{tt}", __FILE__))
 
         File.open "#{tt}", 'w', 0755 do |f|
           f.puts ERB.new(template, nil, '-').result(binding)
         end
       end
-
-      %w[plugins.yaml boxes.yaml].each do |cfg|
-        `mkdir config`
-        `cp ../templates/#{cfg} config/#{cfg}`
-      end
     end
 
     def install_vagrant_plugins
+      load_config
+
       # clean Vagrantfile
       system("rm Vagrantfile")
 
       # Bindler is going beserk on me, lets fall back to a simple
       # vagrant plugin install
       @plugins.each do |x|
+        system("vagrant plugin uninstall #{x}")
         system("vagrant plugin install #{x}")
       end
 
