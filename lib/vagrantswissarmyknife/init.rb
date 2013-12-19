@@ -1,3 +1,4 @@
+
 module VagrantSwissArmyKnife
   class Init
 
@@ -29,12 +30,14 @@ module VagrantSwissArmyKnife
     def install_templates
       %w[Vagrantfile Berksfile Gemfile plugins.yaml boxes.yaml].each do |tt|
 
-        template = File.read(File.expand_path("../../../templates/#{tt}", __FILE__))
+        template = File.read(
+          File.expand_path("../../../templates/#{tt}", __FILE__))
 
-        File.open "#{tt}", 'w', 0755 do |f|
-          f.puts ERB.new(template, nil, '-').result(binding)
+        Unless File.exists?("#{tt}")
+          File.open "#{tt}", 'w', 0755 do |f|
+            f.puts ERB.new(template, nil, '-').result(binding)
+          end
         end
-      end
     end
 
     def install_vagrant_plugins
@@ -58,15 +61,23 @@ module VagrantSwissArmyKnife
       system(cli)
     end
 
+    def box_exist?(name)
+      %x{ vagrant box list }.match(name) ? true : false
+    end
+
     def download_vagrant_boxes
       @boxes.each_pair do |name,url|
-        system("wget -c #{url}")
+        unless box_exist?(name)
+          system("wget -c #{url}")
+        end
       end
     end
 
     def import_vagrant_boxes
       @boxes.each_pair do |name,url|
-        system("vagrant box add #{name} #{url}")
+        unless box_exist?(name)
+          system("vagrant box add #{name} #{url}")
+        end
       end
     end
 

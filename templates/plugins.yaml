@@ -13,8 +13,6 @@
 "vagrant-ohai",
 "vagrant-omnibus",
 "vagrant-persistent-storage",
-"vagrant-pristine",
-"vagrant-reload",
 "vagrant-vbguest",
 "vagrant-vbox-snapshot",
 "vagrant-windows",
