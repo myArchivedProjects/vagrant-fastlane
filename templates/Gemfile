@@ -1,5 +1,5 @@
 # A sample Gemfile
-source "ttp://eu.yarp.io"
+source "http://eu.yarp.io"
 
 group :development do
   gem 'chef-zero'
