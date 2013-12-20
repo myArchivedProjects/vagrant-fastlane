@@ -21,8 +21,8 @@ command :init do |cmd|
     initialize.install_templates
     initialize.bundler
     initialize.install_vagrant_plugins
-    initialize.download_vagrant_boxes
-    initialize.import_vagrant_boxes
+    #initialize.download_vagrant_boxes
+    #initialize.import_vagrant_boxes
   end
 end
 
