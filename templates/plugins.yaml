@@ -1,11 +1,2 @@
 ---
-[ "chef",
-"vagrant-berkshelf",
-"vagrant-cachier",
-"vagrant-chefzero",
-"vagrant-hostmanager",
-"vagrant-ohai",
-"vagrant-omnibus",
-"vagrant-vbguest",
-"vagrant-windows" ]
-
+[ "vagrant-plugin-bundler" ]

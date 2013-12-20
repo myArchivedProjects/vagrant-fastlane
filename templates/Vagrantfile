@@ -55,11 +55,24 @@ cookbook_testers = {
     }
 }
 
-Vagrant.require_plugin "vagrant-chefzero"
-Vagrant.require_plugin "vagrant-berkshelf"
-Vagrant.require_plugin "vagrant-omnibus"
+#Vagrant.require_plugin "vagrant-chefzero"
+#Vagrant.require_plugin "vagrant-berkshelf"
+#Vagrant.require_plugin "vagrant-omnibus"
+
 
 Vagrant.configure("2") do |global_config|
+
+   global_config.plugin.deps do
+     depend 'chef', '11.8.2'
+     depend 'vagrant-berkshelf', '1.3.6'
+     depend 'vagrant-cachier', '0.5.0'
+     depend 'vagrant-chefzero', '1.0.1'
+     depend 'vagrant-hostmanager', '1.3.0'
+     depend 'vagrant-ohai', '0.1.7'
+     depend 'vagrant-omnibus', '1.2.1'
+     depend 'vagrant-vbguest', '0.10.0'
+     depend 'vagrant-windows', '1.5.0'
+   end
 
   global_config.vm.define :chefzero do |config|
     config.vm.network :private_network, ip: chef0_ip
