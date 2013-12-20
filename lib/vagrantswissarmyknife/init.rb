@@ -33,11 +33,12 @@ module VagrantSwissArmyKnife
         template = File.read(
           File.expand_path("../../../templates/#{tt}", __FILE__))
 
-        Unless File.exists?("#{tt}")
+        unless File.exists?("#{tt}")
           File.open "#{tt}", 'w', 0755 do |f|
             f.puts ERB.new(template, nil, '-').result(binding)
           end
         end
+      end
     end
 
     def install_vagrant_plugins

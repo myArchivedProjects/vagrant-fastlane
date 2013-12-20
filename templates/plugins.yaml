@@ -1,20 +1,11 @@
 ---
 [ "chef",
-"sahara",
 "vagrant-berkshelf",
 "vagrant-cachier",
 "vagrant-chefzero",
-"vagrant-cucumber",
-"vagrant-docker",
-"vagrant-global-status",
 "vagrant-hostmanager",
-"vagrant-lxc",
-"vagrant-multiprovider-snap",
 "vagrant-ohai",
 "vagrant-omnibus",
-"vagrant-persistent-storage",
 "vagrant-vbguest",
-"vagrant-vbox-snapshot",
-"vagrant-windows",
-"vocker" ]
+"vagrant-windows" ]
 
