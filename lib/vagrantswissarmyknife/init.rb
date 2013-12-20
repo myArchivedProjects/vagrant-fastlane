@@ -45,7 +45,7 @@ module VagrantSwissArmyKnife
       load_config
 
       # clean Vagrantfile
-      system("rm Vagrantfile")
+      #system("rm Vagrantfile")
 
       # Bindler is going beserk on me, lets fall back to a simple
       # vagrant plugin install
@@ -56,9 +56,10 @@ module VagrantSwissArmyKnife
 
       # we need the latest vagrant-vbguest
       # remind me why!
+      # move this to vagrant-bundler
       cli = %w[vagrant plugin install
                --plugin-source http://rubygems.org/
-               --plugin-prerelease vagrant-vbguest" ].join(' ')
+               --plugin-prerelease vagrant-vbguest ].join(' ')
       system(cli)
     end
 
