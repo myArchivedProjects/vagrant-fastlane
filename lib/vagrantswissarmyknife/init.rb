@@ -14,6 +14,7 @@ module VagrantSwissArmyKnife
     end
 
     def plugins
+      binding.pry
       @plugins = YAML.load(File.read('plugins.yaml'))
     end
 
