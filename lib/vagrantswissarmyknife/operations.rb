@@ -17,6 +17,7 @@ module VagrantSwissArmyKnife
     end
 
     def start_polipo
+      puts ENV['http_proxy']
       system("polipo/polipo -c polipo.config &")
     end
 
