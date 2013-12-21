@@ -16,6 +16,17 @@ module VagrantSwissArmyKnife
       system("vagrant destroy -f")
     end
 
+    def start_polipo
+      system("polipo/polipo -c polipo.config &")
+    end
+
+    def set_proxy_env_variables
+      ENV['http_proxy']='http://localhost:6060';
+      ENV['https_proxy']='https://localhost:6060';
+      ENV['HTTP_PROXY']='http://localhost:6060';
+      ENV['HTTPS_PROXY']='https://localhost:6060';
+    end
+
   end
 end
 

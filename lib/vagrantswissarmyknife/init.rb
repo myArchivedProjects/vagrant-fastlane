@@ -28,7 +28,13 @@ module VagrantSwissArmyKnife
     end
 
     def install_templates
-      %w[Vagrantfile Berksfile Gemfile plugins.yaml boxes.yaml].each do |tt|
+      %w[
+         Vagrantfile
+         Berksfile
+         Gemfile
+         plugins.yaml
+         boxes.yaml
+         polipo.config].each do |tt|
 
         template = File.read(
           File.expand_path("../../../templates/#{tt}", __FILE__))
@@ -115,6 +121,13 @@ module VagrantSwissArmyKnife
       @boxes.each_pair do |name,url|
         system("rm #{name}.box")
       end
+    end
+
+    def install_polipo
+      system("git clone git://git.wifi.pps.univ-paris-diderot.fr/polipo")
+      system("cd polipo; make")
+      system("mkdir #{ENV['HOME']}/.polipo-cache")
+      system("touch #{ENV['HOME']}/.polipo-cache/polipo.log")
     end
 
   end #class Init
