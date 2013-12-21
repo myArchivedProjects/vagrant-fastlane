@@ -27,8 +27,8 @@ command :init do |cmd|
     operations.start_polipo
     binding.pry
     operations.set_proxy_env_variables
-    #initialize.bundler
-    #initialize.install_vagrant_plugins
+    initialize.bundler
+    initialize.install_vagrant_plugins
     #initialize.download_vagrant_boxes
     #initialize.import_vagrant_boxes
   end
