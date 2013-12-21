@@ -25,6 +25,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "commander"
   #
   spec.add_runtime_dependency "bundler", "~> 1.3"
+  spec.add_runtime_dependency "pry"
+  spec.add_runtime_dependency "pry-remote"
   spec.add_runtime_dependency "commander"
   #
 end
