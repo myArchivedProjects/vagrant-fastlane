@@ -49,9 +49,9 @@ module VagrantSwissArmyKnife
 
       # Bindler is going beserk on me, lets fall back to a simple
       # vagrant plugin install
-      @plugins.each do |x|
+      @plugins.each_pair do |x,y|
         system("vagrant plugin uninstall #{x}")
-        system("vagrant plugin install #{x}")
+        system("vagrant plugin install #{x} --plugin-version #{y}")
       end
 
       # we need the latest vagrant-vbguest
