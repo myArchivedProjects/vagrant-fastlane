@@ -8,4 +8,5 @@ group :development do
   gem 'json', '<= 1.7.7'
   gem 'pry'
   gem 'pry-remote'
+  gem 'pry-nav'
 end
