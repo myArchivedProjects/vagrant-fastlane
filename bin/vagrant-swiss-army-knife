@@ -33,7 +33,6 @@ command :init do |cmd|
   end
 end
 
-
 command :uninstall do |cmd|
   cmd.syntax = 'vagrant-swissarmyknife uninstall'
   cmd.description = 'uninstalls the components'
