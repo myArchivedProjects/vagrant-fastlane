@@ -1,12 +1,10 @@
-# Vagrant::Swissarmyknife
-
-TODO: Write a gem description
+# Vagrant-swissarmyknife
 
 ## Installation
 
 install it as:
 
-    $ gem install vagrant-swissarmyknife
+    $ rake run_once
 
 ## Usage
 
