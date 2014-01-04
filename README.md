@@ -29,9 +29,17 @@ The configuration is defined on a set of files bundled into this repository.
 
 ## Installation
 
-install it as:
+installation steps:
 
-    use rbenv/rvm/chruby to switch to your personal ruby
+use rbenv/rvm/chruby to switch to your personal ruby
+
+Clone this repository locally
+    $ git clone https://github.com/Azulinho/Vagrant-fastlane
+Rename it to your new project name
+    $ mv Vagrant-fastlane <your project name>
+    $ cd <your project name>
+And re-initialize the git repositor for your own project
+    $ git init
 
 then:
 
@@ -46,6 +54,14 @@ Edit the Vagrantfile and the Berskfile adding all the cookbooks you may need
     $ rake up
     $ rake provision
     $ vagrant ssh <boxname>
+
+Update your boxes and plugins by:
+
+    $ vim boxes.yaml
+    $ vim plugins.yaml
+    $ rake install_vagrant_plugins
+    $ rake download_vagrant_boxes
+    $ rake import_vagrant_boxes
 
 ## Contributing
 
