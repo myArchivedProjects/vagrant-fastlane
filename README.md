@@ -17,6 +17,7 @@ Features:
    - configures your VMs so that they connect to your polipo caching server
 
 Your cached objects are kept under your homedir in a .polipo-cache folder.
+
 The configuration is defined on a set of files bundled into this repository.
 
 * polipo.config (no need to tamper with it)
@@ -32,7 +33,7 @@ install it as:
 
     use rbenv/rvm/chruby to switch to your personal ruby
 
-    then:
+then:
 
     $ rake run_once
 
