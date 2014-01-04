@@ -6,6 +6,7 @@ required vagrant boxes.
 
 Features:
 
+* Cooks you your favourite sandwich on wheat free bread
 * runs a personal polipo caching server on port 6060
 * installs a list of vagrant plugins for you
 * installs gem bundler and and a bunch of gems into your vendor folder
@@ -26,6 +27,19 @@ The configuration is defined on a set of files bundled into this repository.
 * Gemfile (and new gems if needed)
 * Berksfile (define the list of your cookbooks)
 * Vagrantfile (adjust your VMs)
+
+Uses the following plugins:
+
+* vagrant-vbguest         -> updates your virtualbox modules
+* vagrant-windows         -> winRM support
+* vagrant-omnibus         -> installs latest chef client
+* vagrant-proxyconf       -> configures VMs to use your polipo cache
+* vagrant-berkshelf       -> populates your chef0 with your cookbooks
+* vagrant-hostmanager     -> manages /etc/hosts
+* vagrant-cachier         -> caches your objects
+* vagrant-chefzero        -> and in-memory chef-server
+* vagrant-ohai            -> set your hostname to your internal ip
+
 
 ## Installation
 
