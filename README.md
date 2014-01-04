@@ -1,14 +1,31 @@
-# Vagrant-swissarmyknife
+# Vagrant-fastlane
+
+More than a boilerplate, it speeds up your cookbook development by caching
+agressively your objects.
+
+On install it sets a personal polipo instance running on port 6060, your VMs
+will connect to it avoid retriving the same objects over and over.
+All polipo cache is kept on your homedir under .polipo-cache
 
 ## Installation
 
 install it as:
 
+    use rbenv/rvm/chruby to switch to your personal ruby
+
+    then:
+
     $ rake run_once
 
 ## Usage
 
-TODO: Write usage instructions here
+Edit the Vagrantfile and the Berskfile adding all the cookbooks you may need
+
+    $ vim Vagrantfile
+    $ vim Berksfile
+    $ rake up
+    $ rake provision
+    $ vagrant ssh <boxname>
 
 ## Contributing
 
