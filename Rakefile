@@ -1,4 +1,5 @@
-
+require 'erb'
+require 'yaml'
 
 def load_config
   @plugins = YAML.load(File.read('plugins.yaml'))
@@ -9,20 +10,26 @@ def box_exist?(name)
   %x{ vagrant box list }.match(name) ? true : false
 end
 
+def set_proxy_env_variables
+  ENV['http_proxy']='http://localhost:6060';
+  ENV['https_proxy']='https://localhost:6060';
+  ENV['HTTP_PROXY']='http://localhost:6060';
+  ENV['HTTPS_PROXY']='https://localhost:6060';
+end
+
 task :default do
   puts "available tasks:"
-  puts "setup           -> downloads boxes, installs plugins"
-  puts "up              -> vagrant up but not provision"
+  puts "run_once        -> downloads all required components"
+  puts "start_polipo    -> starts polipo caching server"
   puts "provision       -> berks update and vagrant provision"
-  puts "install         -> install vagrant plugins"
-  puts "download_boxes  -> download the vagrant boxes"
-  puts "clean_boxes     -> remove the downloaded vagrant boxes"
+  puts "up              -> vagrant up --no-provision"
+  puts "halt            -> vagrant halt"
+  puts "destroy         -> destroy the VMs"
   puts "uninstall       -> destroy the VMs and uninstall the vagrant plugins"
   puts "destroy         -> destroy the VMs"
 end
 
 task :run_once => [
-  :install_templates,
   :install_polipo,
   :start_polipo,
   :set_proxy_env_variables,
@@ -30,26 +37,6 @@ task :run_once => [
   :install_vagrant_plugins,
   :download_vagrant_boxes,
   :import_vagrant_boxes ] do
-end
-
-task :install_templates do
-  %w[
-     Vagrantfile
-     Berksfile
-     Gemfile
-     plugins.yaml
-     boxes.yaml
-     polipo.config].each do |tt|
-
-    template = File.read(
-      File.expand_path("templates/#{tt}", __FILE__))
-
-    unless File.exists?("#{tt}")
-      File.open "#{tt}", 'w', 0755 do |f|
-        f.puts ERB.new(template, nil, '-').result(binding)
-      end
-    end
-  end
 end
 
 task :install_polipo do
@@ -63,22 +50,15 @@ task :start_polipo do
   system("polipo/polipo -c polipo.config &")
 end
 
-task :set_proxy_env_variables do
-  ENV['http_proxy']='http://localhost:6060';
-  ENV['https_proxy']='https://localhost:6060';
-  ENV['HTTP_PROXY']='http://localhost:6060';
-  ENV['HTTPS_PROXY']='https://localhost:6060';
-end
-
 task :bundler do
-  system("bundle install")
+  set_proxy_env_variables
+  system("gem install bundler")
+  system("bundle install --path vendor")
 end
 
 task :install_vagrant_plugins do
+  set_proxy_env_variables
   load_config
-
-  # clean Vagrantfile
-  #system("rm Vagrantfile")
 
   # Bindler is going beserk on me, lets fall back to a simple
   # vagrant plugin install
@@ -96,7 +76,10 @@ task :install_vagrant_plugins do
   system(cli)
 end
 
-task :download_vagrant_boxes => [ :set_proxy_env_variables]  do
+task :download_vagrant_boxes do
+  set_proxy_env_variables
+  load_config
+
   @boxes.each_pair do |name,url|
     unless box_exist?(name)
       system("wget -c #{url}")
@@ -105,9 +88,10 @@ task :download_vagrant_boxes => [ :set_proxy_env_variables]  do
 end
 
 task :import_vagrant_boxes do
+  load_config
   @boxes.each_pair do |name,url|
     unless box_exist?(name)
-      system("vagrant box add #{name} #{url}")
+      system("vagrant box add #{name} #{url.split('/').last}")
     end
   end
 end
@@ -118,50 +102,31 @@ task :clean_vagrant_boxes do
   end
 end
 
-
-task :setup => [
-  :install, :download_boxes, :import_boxes ]
-
-task :install do
-  # clean Vagrantfile
-  system("rm Vagrantfile")
-
-  # Bindler is going beserk on me, lets fall back to a simple
-  # vagrant plugin install
-  plugins.each do |x|
-    system("vagrant plugin install #{x}")
-  end
-
-  # we need the latest vagrant-vbguest
-  system("vagrant plugin install --plugin-source http://rubygems.org/ --plugin-prerelease vagrant-vbguest")
-
-  # install good vagrantfile
-  system("cp Vagrantfile.latest Vagrantfile")
-end
-
 task :uninstall_vagrant_plugins do
   @plugins.each do |x|
     system("vagrant plugin uninstall #{x}")
   end
 end
 
-task :destroy_vagrant_vms do
+task :destroy do
   system("vagrant destroy -f")
 end
 
-task :uninstall => [:destroy_vagrant_vms ] do
+task :uninstall => [ :destroy_vagrant_vms,
+                     :uninstall_vagrant_plugins ] do
+  load_config
   # clean Vagrantfile
   system("rm Vagrantfile")
 
-  plugins.each do |x|
+  @plugins.each do |x|
     system("vagrant plugin uninstall #{x}")
   end
 end
 
 task :bundler do
+  set_proxy_env_variables
   system("bundle install")
 end
-
 
 task :provision do
   system("berks update")
@@ -173,24 +138,14 @@ task :up do
   system("vagrant up --no-provision")
 end
 
-task :destroy do
-  system("vagrant destroy -f")
-end
-
-task :download_boxes do
-  boxes.each_pair do |name,url|
-    system("wget -c #{url}")
-  end
-end
-
-task :import_boxes do
-  boxes.each_pair do |name,url|
-    system("vagrant box add #{name} #{url}")
-  end
+task :halt do
+  system("vagrant halt")
 end
 
 task :clean_donwloaded_boxes do
-  boxes.each_pair do |name,url|
-    system("rm #{name}.box")
+  load_config
+
+  @boxes.each_pair do |name,url|
+    system("rm #{url.split('/').last}")
   end
 end
