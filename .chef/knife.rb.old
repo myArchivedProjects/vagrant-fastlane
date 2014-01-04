@@ -1,0 +1,10 @@
+# Logging.
+log_level :debug
+log_location STDOUT
+
+# Chef server configuration.
+chef_server_url "#{ENV['KNIFE_CHEF_SERVER']}"
+client_key "#{ENV['KNIFE_CLIENT_KEY']}"
+node_name "#{ENV['KNIFE_NODE_NAME']}"
+validation_client_name "#{ENV['KNIFE_VALIDATION_CLIENT_NAME']}"
+validation_key "#{ENV['KNIFE_VALIDATION_CLIENT_KEY']}"
