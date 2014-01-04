@@ -1,24 +1,51 @@
-# Vagrant::Swissarmyknife
+# Vagrant-fastlane
 
-TODO: Write a gem description
+More than a boilerplate, it speeds up your cookbook development by caching
+agressively your objects, installing vagrant plugins for you and downloading
+required vagrant boxes.
+
+Features:
+
+* runs a personal polipo caching server on port 6060
+* installs a list of vagrant plugins for you
+* installs gem bundler and and a bunch of gems into your vendor folder
+* sets a new vagrantfile which:
+   - installs latest virtualbox modules
+   - installs latest chef client
+   - prepares a running chef-zero server on a dedicated VM
+   - runs berkshelf and upload all your cookbooks from your berksfile
+   - configures your VMs so that they connect to your polipo caching server
+
+Your cached objects are kept under your homedir in a .polipo-cache folder.
+
+The configuration is defined on a set of files bundled into this repository.
+
+* polipo.config (no need to tamper with it)
+* plugins.yaml (add new vagrant-plugins to it if you wish)
+* boxes.yaml (add new vagrant boxes to this list to download and import)
+* Gemfile (and new gems if needed)
+* Berksfile (define the list of your cookbooks)
+* Vagrantfile (adjust your VMs)
 
 ## Installation
 
-Add this line to your application's Gemfile:
+install it as:
 
-    gem 'vagrant-swissarmyknife'
+    use rbenv/rvm/chruby to switch to your personal ruby
 
-And then execute:
+then:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install vagrant-swissarmyknife
+    $ rake run_once
 
 ## Usage
 
-TODO: Write usage instructions here
+Edit the Vagrantfile and the Berskfile adding all the cookbooks you may need
+
+    $ vim Vagrantfile
+    $ vim Berksfile
+    $ rake up
+    $ rake provision
+    $ vagrant ssh <boxname>
 
 ## Contributing
 

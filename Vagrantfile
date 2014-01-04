@@ -1,15 +1,12 @@
-# vim: ai ts=2 sts=2 et sw=2 ft=ruby
+# vim: ai ts=3 sts=2 et sw=2 ft=ruby
 # vim: autoindent tabstop=2 shiftwidth=2 expandtab softtabstop=2 filetype=ruby
 #
-# Intall required vagrant plugins using:
-#   vagrant plugin install bindler
-#   vagrant bindler setup
-#   vagrant plugin bundle
-#
-
 
 chef0_ip = '172.16.1.2'
 chef0_port = '4000'
+proxy_http = 'http://172.16.1.1:6060/'
+proxy_https = 'http://172.16.1.1:6060/'
+noproxy = 'localhost,127.0.0.1,.local'
 
 cookbook_testers = {
   #:centos64 => {
@@ -26,14 +23,14 @@ cookbook_testers = {
         #:volgroupname => "vg01"
       #}
     #},
-    #:run_list => [ "recipe[vagrant-httproxy]", "recipe[apache]" ]
+    #:run_list => [ "recipe[ntp]", "recipe[apache]" ]
   #},
   :precise => {
     :vmbox_name => 'precise64',
     :vmbox_url => 'http://files.vagrantup.com/precise64.box',
     :hostname => "precise-cookbook-test",
     :ipaddress => "172.16.1.11",
-    :run_list => "recipe[app-wordpress]",
+    :run_list => "recipe[ntp]",
     :on_boot => [ "apt-get update",
                      "echo -e 'vagrant\nvagrant' | passwd root "
                    ],
@@ -42,14 +39,17 @@ cookbook_testers = {
     :vrde_port => 8011,
     :forward_ports => [ 3389, 8112,
                         22, 8212,
-                        80, 8312 ]
+                        80, 8312 ],
+    :proxy_http => proxy_http,
+    :proxy_https => proxy_https,
+    :noproxy => noproxy
   },
   :WIN2K8R2 => {
     :vmbox_name => 'WIN2K8R2',
     :vmbox_url => 'http://109.169.95.220/WIN2K8R2.box',
     :hostname => "win2k8-cookbook-test",
     :ipaddress => "172.16.1.12",
-    :run_list => "recipe[app-umbraco]",
+    :run_list => "recipe[windows]",
     :on_boot => [],
     :os_type => "windows",
     :ram => 2048,
@@ -64,6 +64,7 @@ cookbook_testers = {
 Vagrant.require_plugin "vagrant-chefzero"
 Vagrant.require_plugin "vagrant-berkshelf"
 Vagrant.require_plugin "vagrant-omnibus"
+
 
 Vagrant.configure("2") do |global_config|
 
@@ -81,6 +82,10 @@ Vagrant.configure("2") do |global_config|
     config.vbguest.auto_update = true
     config.vbguest.auto_reboot = true
     config.vm.boot_timeout = 300
+
+    config.env_proxy.http     = proxy_http
+    config.env_proxy.https    = proxy_https
+    config.env_proxy.no_proxy = noproxy
 
     config.vm.provision :chefzero do |vm|
       vm.ip = chef0_ip
@@ -134,6 +139,11 @@ Vagrant.configure("2") do |global_config|
         end
 
       when "linux"
+        unless options[:proxy_http].nil?
+          config.env_proxy.http     = options[:proxy_http]
+          config.env_proxy.https    = options[:proxy_https]
+          config.env_proxy.no_proxy = options[:noproxy]
+        end
 
       config.omnibus.chef_version = :latest
 
