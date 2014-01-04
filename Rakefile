@@ -129,7 +129,7 @@ task :bundler do
 end
 
 task :provision do
-  system("berks update")
+  system("bundle exec berks update")
   system("vagrant provision")
 end
 
