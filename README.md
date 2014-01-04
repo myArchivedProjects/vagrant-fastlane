@@ -34,11 +34,16 @@ installation steps:
 use rbenv/rvm/chruby to switch to your personal ruby
 
 Clone this repository locally
+
     $ git clone https://github.com/Azulinho/Vagrant-fastlane
+
 Rename it to your new project name
+
     $ mv Vagrant-fastlane <your project name>
     $ cd <your project name>
+
 And re-initialize the git repositor for your own project
+
     $ git init
 
 then:
