@@ -41,7 +41,7 @@ end
 
 task :install_polipo do
   system("git clone git://git.wifi.pps.univ-paris-diderot.fr/polipo")
-  system("cd polipo; make")
+  system("cd polipo; git checkout tags/polipo-1.0.4.1 ; make")
   system("mkdir #{ENV['HOME']}/.polipo-cache")
   system("touch #{ENV['HOME']}/.polipo-cache/polipo.log")
 end
