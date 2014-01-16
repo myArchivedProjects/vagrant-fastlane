@@ -32,7 +32,6 @@ end
 task :run_once => [
   :install_polipo,
   :start_polipo,
-  :set_proxy_env_variables,
   :bundler,
   :install_vagrant_plugins,
   :download_vagrant_boxes,
